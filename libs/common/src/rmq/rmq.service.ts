@@ -6,13 +6,18 @@ import { RmqOptions, Transport } from '@nestjs/microservices';
 export class RMQService {
   constructor(private readonly configService: ConfigService) {}
   getOptions(queue: string, noAck: boolean = false): RmqOptions {
+    const uri = this.configService.get<string>('RABBIT_MQ_URI');
+    console.log(uri);
     return {
       transport: Transport.RMQ,
       options: {
-        urls: [this.configService.get<string>('RABBIT_MQ_URI')],
+        urls: [`${uri}?heartbeat=60`],
         queue: this.configService.get<string>(`RABBIT_MQ_${queue}_QUEUE`),
         noAck,
         persistent: true,
+        // socketOptions: {
+        //   heartbeat: 60,
+        // },
       },
     };
   }

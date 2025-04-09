@@ -22,8 +22,13 @@ export class RMQModule {
             useFactory: (configService: ConfigService) => ({
               transport: Transport.RMQ,
               options: {
-                urls: [configService.get<string>('RABBIT_MQ_URI')],
+                urls: [
+                  `${configService.get<string>('RABBIT_MQ_URI')}?heartbeat=60`,
+                ],
                 queue: configService.get(`RABBIT_MQ_${name}_QUEUE`),
+                // socketOptions: {
+                //   heartbeat: 60,
+                // },
               },
             }),
             inject: [ConfigService],
