@@ -28,13 +28,13 @@
         "tsConfigPath": "libs/common/tsconfig.lib.json"
       }
     },
-    "customers": {
+    "email": {
       "type": "application",
-      "root": "apps/customers",
+      "root": "apps/email",
       "entryFile": "main",
-      "sourceRoot": "apps/customers/src",
+      "sourceRoot": "apps/email/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/customers/tsconfig.app.json"
+        "tsConfigPath": "apps/email/tsconfig.app.json"
       }
     },
     "users": {
