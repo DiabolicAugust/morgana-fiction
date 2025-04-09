@@ -7,12 +7,14 @@ import {
   ValidationOptions,
 } from 'class-validator';
 import { Strings } from '../data/strings';
+import { Transform } from 'class-transformer';
 
 export function StrongUsername(validationOptions?: ValidationOptions) {
   return applyDecorators(
     IsString(),
     IsNotEmpty(),
-    Matches(/^[A-Za-z0-9]{5,20}$/, {
+    Transform(({ value }) => value?.toLowerCase()),
+    Matches(/^[a-z0-9]{5,20}$/, {
       message: Strings.usernameValidation,
       ...validationOptions,
     }),

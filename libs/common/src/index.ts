@@ -10,3 +10,5 @@ export * from './services/encryption.service';
 export * from './dto/check-email-existance.dto';
 export * from './decorators/strong-password.decorator';
 export * from './decorators/username.decorator';
+export * from './dto/create-user.dto';
+export * from './filters/error.filter';

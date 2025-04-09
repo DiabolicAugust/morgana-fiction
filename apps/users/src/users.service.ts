@@ -7,7 +7,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from '../../../prisma.service';
-import { CreateUserDto } from '../dto/create-user.dto';
+import { CreateUserDto } from '@app/common';
 import {
   CHECK_EMAIL_EXISTANCE_PATTERN,
   EMAIL_SERVICE,
@@ -17,7 +17,7 @@ import {
   CheckEmailExistanceDto,
   Entities,
 } from '@app/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { UpdateUsernameDto } from '../dto/update-username.dto';
 import { UpdatePasswordDto } from '../dto/update-password.dto';
@@ -31,11 +31,9 @@ export class UsersService {
   ) {}
 
   async create(data: CreateUserDto) {
-    console.log('start');
-
     const existingUser = await this.prisma.user.findFirst({
       where: {
-        username: data.username,
+        username: data.username.toLowerCase(),
       },
     });
     if (existingUser)
@@ -43,20 +41,14 @@ export class UsersService {
         HttpStatus.FORBIDDEN,
         Strings.fieldMustBeUnique(Fields.USERNAME),
       );
-
-    console.log(existingUser);
     const messagePayload: CheckEmailExistanceDto = {
-      email: data.email.toLowerCase(),
+      email: data.email,
     };
     const isEmailExisting = await lastValueFrom(
       this.emailClient.send(CHECK_EMAIL_EXISTANCE_PATTERN, messagePayload),
     );
-    console.log(isEmailExisting);
     if (isEmailExisting)
-      throw new ForbiddenException(
-        HttpStatus.FORBIDDEN,
-        Strings.fieldMustBeUnique(Fields.EMAIL),
-      );
+      throw new RpcException(Strings.fieldMustBeUnique(Fields.EMAIL));
 
     const encryptedPassword = await this.encryptionService.hashData(
       data.password,
@@ -64,7 +56,7 @@ export class UsersService {
 
     const user = await this.prisma.user.create({
       data: {
-        username: data.username,
+        username: data.username.toLowerCase(),
         password: encryptedPassword,
         email: {
           create: {
@@ -133,7 +125,7 @@ export class UsersService {
   async updateUserUsername(userId: string, data: UpdateUsernameDto) {
     const checkNewUsernameUniqness = await this.prisma.user.findUnique({
       where: {
-        username: data.newUsername,
+        username: data.newUsername.toLowerCase(),
       },
     });
     if (checkNewUsernameUniqness)
@@ -147,7 +139,7 @@ export class UsersService {
         id: userId,
       },
       data: {
-        username: data.newUsername,
+        username: data.newUsername.toLowerCase(),
       },
     });
     if (!updatedUser)
