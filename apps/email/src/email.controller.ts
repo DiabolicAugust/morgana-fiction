@@ -1,6 +1,6 @@
 import { Controller, Get, UsePipes, ValidationPipe } from '@nestjs/common';
 import { EmailService } from './email.service';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { CheckEmailExistanceDto } from '@app/common';
 import { CHECK_EMAIL_EXISTANCE_PATTERN } from '@app/common';
 
@@ -9,9 +9,7 @@ export class EmailController {
   constructor(private readonly emailService: EmailService) {}
 
   @MessagePattern(CHECK_EMAIL_EXISTANCE_PATTERN)
-  @UsePipes(ValidationPipe)
-  checkEmailExistance(data: CheckEmailExistanceDto) {
-    console.log('start controller');
+  checkEmailExistance(@Payload() data: CheckEmailExistanceDto) {
     return this.emailService.checkEmailExistance(data);
   }
 }

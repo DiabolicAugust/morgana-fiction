@@ -15,7 +15,7 @@ export const Strings = {
     `${field} must be one of the following: ${Object.values(enumObject).join(', ')}`,
   fieldMustBeOneOfArray: (field: Fields, array: []) =>
     `${field} must be one of the following: ${array.join(', ')}`,
-  fieldMustBeUnique: (field: Fields) => `${field} mu be unique`,
+  fieldMustBeUnique: (field: Fields) => `${field} must be unique`,
 
   fieldTooShort: (field: string, min: number) =>
     `${field} must be at least ${min} characters long.`,
