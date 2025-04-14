@@ -10,15 +10,21 @@ import {
 import { AuthService } from './auth.service';
 import { CreateUserDto } from '@app/common';
 import { AllExceptionsFilter } from '@app/common';
+import { SignInDto } from '../dto/sign-in.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('/sign-up')
-  // @UseFilters(AllExceptionsFilter)
-  @UsePipes(ValidationPipe)
+  @UsePipes(new ValidationPipe({ transform: true }))
   signUp(@Body() data: CreateUserDto) {
     return this.authService.signUp(data);
+  }
+
+  @Post('/sign-in')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  signIn(@Body() data: SignInDto) {
+    return this.authService.signIn(data);
   }
 }

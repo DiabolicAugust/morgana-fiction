@@ -8,7 +8,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from '@app/common';
+import { CreateUserDto, GET_USER_BY_IDENTIFIER } from '@app/common';
 import { UpdatePasswordDto } from '../dto/update-password.dto';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { CREATE_USER_PATTERN } from '@app/common';
@@ -20,7 +20,6 @@ export class UsersController {
   @MessagePattern(CREATE_USER_PATTERN)
   // @UsePipes(new ValidationPipe({ transform: true }))
   createUser(@Payload() data: CreateUserDto) {
-    console.log('DTO:', data);
     return this.usersService.create(data);
   }
 
@@ -38,5 +37,10 @@ export class UsersController {
   @UsePipes(ValidationPipe)
   updatePassword(@Param('id') userId: string, @Body() data: UpdatePasswordDto) {
     return this.usersService.updateUserPassword(userId, data);
+  }
+
+  @MessagePattern(GET_USER_BY_IDENTIFIER)
+  getUserByIdentifier(@Payload() identifier: string) {
+    return this.usersService.getUserByIdentifier(identifier);
   }
 }

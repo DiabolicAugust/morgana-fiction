@@ -37,10 +37,7 @@ export class UsersService {
       },
     });
     if (existingUser)
-      throw new ForbiddenException(
-        HttpStatus.FORBIDDEN,
-        Strings.fieldMustBeUnique(Fields.USERNAME),
-      );
+      throw new RpcException(Strings.fieldMustBeUnique(Fields.USERNAME));
     const messagePayload: CheckEmailExistanceDto = {
       email: data.email,
     };
@@ -148,5 +145,18 @@ export class UsersService {
         HttpStatus.NOT_MODIFIED,
       );
     return updatedUser;
+  }
+
+  async getUserByIdentifier(identifier: string) {
+    console.log(identifier);
+    const user = await this.prisma.user.findFirst({
+      where: {
+        OR: [{ email: { email: identifier } }, { username: identifier }],
+      },
+      include: {
+        email: true,
+      },
+    });
+    return user;
   }
 }
