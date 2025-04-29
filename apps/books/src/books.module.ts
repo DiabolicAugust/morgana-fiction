@@ -11,8 +11,8 @@ import { S3Service } from '@app/common';
 import { BookCoverModule } from '../book-cover/book-cover.module';
 import { GenreModule } from '../genre/genre.module';
 import { TagModule } from '../tag/tag.module';
-import { BookGenreModule } from './books/book-genre/book-genre.module';
-import { BookTagModule } from './books/book-tag/book-tag.module';
+import { BookGenreModule } from '../book-genre/book-genre.module';
+import { BookTagModule } from '../book-tag/book-tag.module';
 
 @Module({
   imports: [
