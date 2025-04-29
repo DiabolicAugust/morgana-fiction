@@ -8,17 +8,15 @@ import {
   Delete,
 } from '@nestjs/common';
 import { BookTagService } from './book-tag.service';
-import { CreateBookTagDto } from './dto/create-book-tag.dto';
-import { UpdateBookTagDto } from './dto/update-book-tag.dto';
 
 @Controller('book-tag')
 export class BookTagController {
   constructor(private readonly bookTagService: BookTagService) {}
 
-  @Post()
-  create(@Body() createBookTagDto: CreateBookTagDto) {
-    return this.bookTagService.create(createBookTagDto);
-  }
+  // @Post()
+  // create(@Body() createBookTagDto: CreateBookTagDto) {
+  //   return this.bookTagService.create(createBookTagDto);
+  // }
 
   @Get()
   findAll() {
@@ -30,13 +28,13 @@ export class BookTagController {
     return this.bookTagService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBookTagDto: UpdateBookTagDto) {
-    return this.bookTagService.update(+id, updateBookTagDto);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateBookTagDto: UpdateBookTagDto) {
+  //   return this.bookTagService.update(id, updateBookTagDto);
+  // }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.bookTagService.remove(+id);
+    return this.bookTagService.remove(id);
   }
 }
