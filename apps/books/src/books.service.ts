@@ -40,9 +40,11 @@ export class BooksService {
       coverUrl = await this.s3Service.uploadFile(cover);
     }
 
+    const { tagIds, genreIds, ...bookFields } = data;
+
     const book = await this.prisma.book.create({
       data: {
-        ...data,
+        ...bookFields,
         authors: {
           create: {
             author: { connect: { id: user.id } },
@@ -50,12 +52,12 @@ export class BooksService {
           },
         },
         tags: {
-          create: data.tagIds.map((tagId) => ({
+          create: tagIds.map((tagId) => ({
             tag: { connect: { id: tagId } },
           })),
         },
         genres: {
-          create: data.genreIds.map((genreId) => ({
+          create: genreIds.map((genreId) => ({
             genre: { connect: { id: genreId } },
           })),
         },
@@ -70,6 +72,8 @@ export class BooksService {
       include: {
         authors: { include: { author: true } },
         cover: true,
+        tags: { include: { tag: true } },
+        genres: { include: { genre: true } },
       },
     });
 

@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { TagService } from './tag.service';
 import { CreateTagDto } from './dto/create-tag.dto';
@@ -16,6 +18,7 @@ export class TagController {
   constructor(private readonly tagService: TagService) {}
 
   @Post()
+  @UsePipes(ValidationPipe)
   create(@Body() createTagDto: CreateTagDto) {
     return this.tagService.create(createTagDto);
   }
@@ -31,6 +34,7 @@ export class TagController {
   }
 
   @Patch(':id')
+  @UsePipes(ValidationPipe)
   update(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
     return this.tagService.update(id, updateTagDto);
   }

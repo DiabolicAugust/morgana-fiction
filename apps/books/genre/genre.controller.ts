@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { GenreService } from './genre.service';
 import { CreateGenreDto } from './dto/create-genre.dto';
@@ -16,6 +18,7 @@ export class GenreController {
   constructor(private readonly genreService: GenreService) {}
 
   @Post()
+  @UsePipes(ValidationPipe)
   create(@Body() createGenreDto: CreateGenreDto) {
     return this.genreService.create(createGenreDto);
   }
@@ -31,6 +34,7 @@ export class GenreController {
   // }
 
   @Patch(':id')
+  @UsePipes(ValidationPipe)
   update(@Param('id') id: string, @Body() updateGenreDto: UpdateGenreDto) {
     return this.genreService.update(id, updateGenreDto);
   }
