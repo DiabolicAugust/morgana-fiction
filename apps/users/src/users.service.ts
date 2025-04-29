@@ -151,12 +151,17 @@ export class UsersService {
     console.log(identifier);
     const user = await this.prisma.user.findFirst({
       where: {
-        OR: [{ email: { email: identifier } }, { username: identifier }],
+        OR: [
+          { email: { email: identifier } },
+          { username: identifier },
+          { id: identifier },
+        ],
       },
       include: {
         email: true,
       },
     });
+    console.log(user);
     return user;
   }
 }

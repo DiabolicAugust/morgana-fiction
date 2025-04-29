@@ -7,6 +7,7 @@ export const enum Fields {
   USER = 'user',
   TEXT = 'text',
   VIDEO = 'video',
+  NAME = 'name',
 }
 
 export const enum Entities {
@@ -15,4 +16,6 @@ export const enum Entities {
   LEGEND = 'legend',
   CHRONICLE = 'chronicle',
   COMMENT = 'comment',
+  GENRE = 'genre',
+  TAG = 'tag',
 }

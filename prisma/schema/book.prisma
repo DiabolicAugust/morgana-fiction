@@ -1,0 +1,29 @@
+ enum BookLanguage {
+  UKRAINIAN
+  ENGLISH
+}
+
+enum BookStatus {
+  ONGOING
+  FROZEN
+  COMPLETED
+}
+
+model Book{
+  id String @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt 
+
+  title String
+  description String
+  translator String?
+  amountOfPages Int? @map("amount_of_pages")
+  releaseYear Int? @map("release_year")
+  language BookLanguage @default(UKRAINIAN)
+  status BookStatus @default(ONGOING)
+
+  authors BookAuthor[]
+  tags BookTag[]
+  genres BookGenre[]
+  cover BookCover?
+}

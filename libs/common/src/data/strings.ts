@@ -70,6 +70,8 @@ export const Strings = {
 
   usernameValidation:
     'Username must be 5-20 characters long and contain only letters and numbers.',
+  genreNameValidation: 'Genre name must be at least 2 characters long.',
+  tagNameValidation: 'Tag name must be at least 2 characters long.',
 
   notAllowedToDoIt: 'You are not allowed to do it',
 

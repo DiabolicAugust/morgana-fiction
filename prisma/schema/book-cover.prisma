@@ -1,0 +1,14 @@
+
+
+model BookCover{
+    id        String    @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt 
+
+    cover String
+
+    book Book @relation(references: [id], fields: [bookId]) 
+    bookId String @map("book_id") @unique
+
+  @@map("book_cover")
+}
