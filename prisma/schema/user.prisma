@@ -8,5 +8,6 @@ model User{
 
   password String
   email Email?
+  bookAuthor BookAuthor[]
   username String @unique
 }

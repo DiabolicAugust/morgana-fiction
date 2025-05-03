@@ -15,3 +15,5 @@ export * from './filters/error.filter';
 export * from './stratages/jwt.strategy';
 export * from './dto/payload.dto';
 export * from './guards/jwt.guard';
+export * from './data/enums/author-roles.enum';
+export * from './services/s3.service';
