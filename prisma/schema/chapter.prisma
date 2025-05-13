@@ -1,0 +1,12 @@
+
+model Chapter{
+    id String @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt 
+
+  text String
+  price Float
+
+  book    Book   @relation(fields: [bookId], references: [id])
+  bookId String @map("book_id")
+}

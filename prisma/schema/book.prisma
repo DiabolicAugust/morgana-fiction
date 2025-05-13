@@ -25,5 +25,6 @@ model Book{
   authors BookAuthor[]
   tags BookTag[]
   genres BookGenre[]
+  chapters Chapter[]
   cover BookCover?
 }
