@@ -1,0 +1,14 @@
+
+model BookTag {
+  id        String    @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt 
+
+  bookId  String
+  tagId String
+  book    Book   @relation(fields: [bookId], references: [id])
+  tag   Tag  @relation(fields: [tagId], references: [id])
+
+  @@unique([bookId, tagId])
+  @@map("book_tag")
+}

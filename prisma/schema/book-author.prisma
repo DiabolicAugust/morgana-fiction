@@ -1,0 +1,23 @@
+ enum AuthorRole {
+  PRIMARY
+  CO_AUTHOR
+  EDITOR
+  REVIEWER
+}
+
+model BookAuthor{
+    id String @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt 
+
+
+    book Book @relation(references: [id], fields: [bookId])
+    bookId String @map("book_id")
+
+    author User @relation(references: [id], fields: [authorId])
+    authorId String @map("author_id")
+
+    role AuthorRole @default(PRIMARY)
+
+    @@map("book_author")
+}
