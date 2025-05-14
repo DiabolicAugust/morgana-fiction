@@ -18,4 +18,5 @@ export const enum Entities {
   COMMENT = 'comment',
   GENRE = 'genre',
   TAG = 'tag',
+  BOOK = 'book',
 }

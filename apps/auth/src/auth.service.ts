@@ -31,11 +31,9 @@ export class AuthService {
   }
 
   async signIn(data: SignInDto) {
-    console.log(data.identifier, 'wtf');
-    const user: User & Email = await lastValueFrom(
+    const user: User & { email: { email: string } } = await lastValueFrom(
       this.userClient.send(GET_USER_BY_IDENTIFIER, data.identifier),
     );
-    console.log(user);
     if (!user)
       throw new HttpException(Strings.entityNotFound, HttpStatus.NOT_FOUND);
 
@@ -46,7 +44,10 @@ export class AuthService {
     if (!isPasswordCorrect)
       throw new HttpException(Strings.wrongPassword, HttpStatus.UNAUTHORIZED);
 
-    const token = await this.tokenService.generateToken(user.id, user.email);
+    const token = await this.tokenService.generateToken(
+      user.id,
+      user.email.email,
+    );
     return {
       token: token,
       data: user,

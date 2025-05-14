@@ -78,6 +78,8 @@ export const Strings = {
   tooManyMedia:
     'You uploaded too many media files. 1 chronicle is allowed to have 3 images and 2 videos max!',
 
+  noUpdateData: "You didn't pass any update data",
+
   create: 'Create',
   delete: 'Delete',
   comment: 'Comment',

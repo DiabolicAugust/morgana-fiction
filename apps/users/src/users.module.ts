@@ -5,6 +5,7 @@ import { PrismaService } from '../../../prisma.service';
 import { EMAIL_SERVICE, RMQModule } from '@app/common';
 import { ConfigModule } from '@nestjs/config';
 import { EncryptionService } from '../../../libs/common/src/services/encryption.service';
+import { ProfileModule } from './profile/profile.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { EncryptionService } from '../../../libs/common/src/services/encryption.
       // }),
     }),
     RMQModule.register({ name: EMAIL_SERVICE }),
+    ProfileModule,
   ],
   controllers: [UsersController],
   providers: [UsersService, PrismaService, EncryptionService],

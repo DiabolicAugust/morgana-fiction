@@ -1,8 +1,19 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PrismaService } from '../../../prisma.service';
 import { CreateChapterDto } from '../dto/create-chapter.dto';
 import { lastValueFrom } from 'rxjs';
-import { CHAPTER_SERVICE, CHECK_BOOK_AUTHOR } from '@app/common';
+import {
+  BOOK_SERVICE,
+  CHAPTER_SERVICE,
+  CHECK_BOOK_AUTHOR,
+  Strings,
+} from '@app/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Book } from '@prisma/client';
 import { UpdateChapterDto } from '../dto/update-chapter.dto';
@@ -11,7 +22,7 @@ import { UpdateChapterDto } from '../dto/update-chapter.dto';
 export class ChaptersService {
   constructor(
     private readonly prisma: PrismaService,
-    @Inject(CHAPTER_SERVICE) private chapterClient: ClientProxy,
+    @Inject(BOOK_SERVICE) private bookClient: ClientProxy,
   ) {}
 
   async create(
@@ -55,6 +66,8 @@ export class ChaptersService {
     bookId: string,
   ) {
     await this.checkRequestorIsAuthor(requestorId, bookId);
+    if (!data)
+      throw new HttpException(Strings.noUpdateData, HttpStatus.BAD_REQUEST);
     return this.prisma.chapter.update({
       where: { id },
       data: data,
@@ -69,7 +82,7 @@ export class ChaptersService {
       bookId: bookId,
     };
     const isRequestorAuthor: boolean = await lastValueFrom(
-      this.chapterClient.send(CHECK_BOOK_AUTHOR, payload),
+      this.bookClient.send(CHECK_BOOK_AUTHOR, payload),
     );
 
     if (!isRequestorAuthor) throw new UnauthorizedException();

@@ -5,7 +5,7 @@ import { PrismaService } from '../../../prisma.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from '@app/common';
+import { BOOK_SERVICE, JwtStrategy, RMQModule } from '@app/common';
 
 @Module({
   imports: [
@@ -19,6 +19,7 @@ import { JwtStrategy } from '@app/common';
         secret: configService.get<string>('JWT_SECRET'),
       }),
     }),
+    RMQModule.register({ name: BOOK_SERVICE }),
   ],
   controllers: [ChaptersController],
   providers: [ChaptersService, PrismaService, JwtStrategy],

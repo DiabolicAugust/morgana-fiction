@@ -1,4 +1,10 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateBookDto } from '../dto/create-book.dto';
 import { lastValueFrom } from 'rxjs';
 import {
@@ -26,6 +32,8 @@ export class BooksService {
     userId: string,
     cover?: Express.Multer.File,
   ) {
+    console.log('book creation');
+    console.log(userId);
     const user: User = await lastValueFrom(
       this.userClient.send(GET_USER_BY_IDENTIFIER, userId),
     );
@@ -83,5 +91,23 @@ export class BooksService {
 
   async getBooks() {
     return this.prisma.book.findMany();
+  }
+
+  async checkRequestorIsAuthor(requestorId: string, bookId: string) {
+    const book = await this.prisma.book.findUnique({
+      where: { id: bookId },
+      include: {
+        authors: {
+          select: { authorId: true },
+        },
+      },
+    });
+
+    if (!book) {
+      throw new NotFoundException(
+        Strings.entityWasNotFoundById(Entities.BOOK, bookId),
+      );
+    }
+    return book.authors.some((a) => a.authorId === requestorId);
   }
 }
