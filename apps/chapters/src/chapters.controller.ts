@@ -51,6 +51,7 @@ export class ChaptersController {
     @Param('bookId') bookId: string,
   ) {
     const user: PayloadDto = req['user'];
+    console.log(user);
     return this.chaptersService.update(data, id, user.id, bookId);
   }
 }
