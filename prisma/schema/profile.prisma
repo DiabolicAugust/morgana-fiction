@@ -1,0 +1,13 @@
+model Profile{
+
+  id String @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt 
+
+  name String
+  description String @default("")
+  
+
+  user User @relation(references: [id], fields: [userId]) 
+  userId String @map("user_id") @unique
+}

@@ -60,6 +60,11 @@ export class UsersService {
             email: data.email.toLowerCase(),
           },
         },
+        profile: {
+          create: {
+            name: data.username.toLowerCase(),
+          },
+        },
       },
       include: {
         email: true,
@@ -81,6 +86,9 @@ export class UsersService {
     const user = await this.prisma.user.findUnique({
       where: {
         id,
+      },
+      include: {
+        profile: true,
       },
     });
     if (user)
@@ -159,6 +167,7 @@ export class UsersService {
       },
       include: {
         email: true,
+        profile: true,
       },
     });
     console.log(user);

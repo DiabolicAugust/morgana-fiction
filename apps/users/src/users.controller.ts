@@ -40,7 +40,7 @@ export class UsersController {
   }
 
   @MessagePattern(GET_USER_BY_IDENTIFIER)
-  getUserByIdentifier(@Payload() identifier: string) {
-    return this.usersService.getUserByIdentifier(identifier);
+  getUserByIdentifier(@Payload() userId: string) {
+    return this.usersService.getUserByIdentifier(userId);
   }
 }

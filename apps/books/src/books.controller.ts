@@ -12,7 +12,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
-import { JwtAuthGuard } from '../../../libs/common/src';
+import { CHECK_BOOK_AUTHOR, JwtAuthGuard } from '@app/common';
 import { CreateBookDto } from '../dto/create-book.dto';
 import { PayloadDto } from '@app/common';
 import {
@@ -20,6 +20,7 @@ import {
   FileInterceptor,
 } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller('/books')
 export class BooksController {
@@ -46,12 +47,20 @@ export class BooksController {
     @UploadedFile()
     file: Express.Multer.File,
   ) {
-    const userId: PayloadDto = req['user'];
-    return this.booksService.create(data, userId.id, file);
+    const user: PayloadDto = req['user'];
+    console.log('user payload: ', user);
+    return this.booksService.create(data, user.id, file);
   }
 
   @Get()
   getBooks() {
     return this.booksService.getBooks();
+  }
+
+  @MessagePattern(CHECK_BOOK_AUTHOR)
+  checkRequestorIsAuthor(
+    @Payload() { requestorId, bookId }: { requestorId: string; bookId: string },
+  ) {
+    return this.booksService.checkRequestorIsAuthor(requestorId, bookId);
   }
 }
