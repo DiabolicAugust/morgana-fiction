@@ -65,6 +65,11 @@ export class UsersService {
             name: data.username.toLowerCase(),
           },
         },
+        balance: {
+          create: {
+            balance: 0,
+          },
+        },
       },
       include: {
         email: true,

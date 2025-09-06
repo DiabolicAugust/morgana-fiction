@@ -49,7 +49,7 @@ export class AuthService {
       user.email.email,
     );
     return {
-      token: token,
+      token,
       data: user,
     };
   }

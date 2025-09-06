@@ -13,4 +13,5 @@ model User{
   email Email?
   bookAuthor BookAuthor[]
   profile Profile?
+  balance Balance?
 }

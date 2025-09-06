@@ -1,0 +1,11 @@
+
+
+model PurchasePackage{
+      id String @id @default(cuid())
+      createdAt DateTime @default(now())
+      updatedAt DateTime @updatedAt 
+
+      amount Int
+      price Int
+      name String
+}
